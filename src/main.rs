@@ -23,12 +23,21 @@ fn search(item: &str, start_dir: &str) {
 }
 
 fn main() {
-    if env::args().len() != 2 {
-        println!("Command use: chronofile <file name/keyword>");
+    if env::args().len() != 2 && env::args().len() != 3 {
+        println!("Command use: chronofile <file name/keyword>\noptional: '-c' searches this directory and all of it's sub-directories instead of whole disk. Always put this argument at the end.");
         exit(1);
     }
 
     let item: String = env::args().nth(1).unwrap().clone();
 
-    search(item.as_str(), "C:/");
+    if env::args().len() == 3 {
+        if env::args().nth(2).unwrap().eq("-c") {
+            search(item.as_str(), ".\\");
+        } else {
+            println!("Command use: chronofile <file name/keyword>\noptional: '-c' searches this directory and all of it's sub-directories instead of whole disk. Always put this argument at the end.");
+            exit(1);
+        }
+    } else {
+        search(item.as_str(), "C:\\");
+    }
 }
